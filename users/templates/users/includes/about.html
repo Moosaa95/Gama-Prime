@@ -1,0 +1,33 @@
+{% load static  %}
+
+<section id="about" class="about">
+    <div class="container">
+
+        <div class="section-title">
+            <h2>About</h2>
+            <p>{{profile.professional_summary}}</p>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4" data-aos="fade-right">
+                <img style="border-radius: 1rem;" src="images/Picture 1.png" class="img-fluid" alt="">
+            </div>
+            <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
+                <h3>{{profile.title}}</h3>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul>
+                            <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span>{{profile.age}}</span></li>
+                            {% comment %} <li><i class="bi bi-chevron-right"></i> <strong>Gender:</strong> <span>Male</span></li> {% endcomment %}
+                            <li><i class="bi bi-chevron-right"></i> <strong>Education:</strong> <span>{{profile.education}}</span><span style="margin-left: .5rem; background-color: #149DDD; border-radius: .5rem; padding: .3rem;"><i style="color: white;">{{profile.year}}</i></span></li>
+                            <li><i class="bi bi-chevron-right"></i> <strong>Nationlity:</strong> <span>{{profile.country}}</span></li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
