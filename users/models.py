@@ -162,17 +162,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.active
     
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        img = Image.open(self.profile_pic.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.profile_pic.path)
-
-
+  
 
 
 class Profile(models.Model):
@@ -202,6 +192,19 @@ class Profile(models.Model):
     
     def __str__(self):
         return str(self.user.email)
+
+
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+
+    #     # check if image exists
+    #     img = Image.open(self.profile_pic.path)
+
+    #     if img.height > 300 or img.width > 300:
+    #         output_size = (300, 300)
+    #         img.thumbnail(output_size)
+    #         img.save(self.profile_pic.path)
+
 
     
     # overwrite the save method it gets run after our method is saved

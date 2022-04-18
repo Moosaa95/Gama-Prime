@@ -14,6 +14,10 @@ from pathlib import Path
 from django.contrib import messages
 # import environ
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,10 +33,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-z5**_)+cw(=8i4n=w)zj)o3d*d!!l-v3ks7*)qn6e-@c%e^(q0'
-
+# SECRET_KEY = 
+SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = os.getenv('IS_DEVELOPMENT') == 'True'
+DEBUG = os.getenv('IS_DEVELOPMENT', True)
+
+
+
+
 
 ALLOWED_HOSTS = []
 
@@ -46,7 +55,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users'
+    'users',
+    'courses',
+    # upload media files
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -72,6 +84,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'courses.views.course_to_display'
             ],
         },
     },
@@ -85,13 +98,12 @@ WSGI_APPLICATION = 'GAMMA.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        # 'NAME': os.environ.get('DB_NAME'),
-        # 'USER': os.environ.get('DB_USER'),
-        # 'PASSWORD': os.environ.get('DB_PASSWORD'),
-        # 'HOST': os.environ.get('DB_HOST'),
-        # 'PORT': os.environ.get('DB_PORT'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT')
 
 
     }
@@ -133,7 +145,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 
@@ -162,3 +174,23 @@ MESSAGE_TAGS = {
     messages.WARNING : 'warning',
     messages.INFO : 'info',
 }
+
+
+
+cloudinary.config(
+    cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key = os.getenv('CLOUDINARY_API_KEY'),
+    api_secret = os.getenv('CLOUDINARY_API_SECRET')
+)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+
+# if os.getenv('IS_DEVELOPMENT'):
+#     MEDIA_ROOT =  BASE_DIR / 'media'
+#     MEDIA_URL = '/media/'
+
+# else:
+#     MEDIA_ROOT = os.getenv('MEDIA_ROOT')
+#     MEDIA_URL = os.getenv('MEDIA_URL')

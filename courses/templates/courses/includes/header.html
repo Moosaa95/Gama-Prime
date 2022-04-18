@@ -1,4 +1,4 @@
-{% load static  %}
+{% load static %}
 
 <header id="header" class="d-flex align-items-center">
     <div class="container d-flex align-items-center justify-content-between">
@@ -12,11 +12,14 @@
 
         <nav id="navbar" class="navbar">
             <ul>
-                <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-                <li><a class="nav-link scrollto" href="#about">Mission</a></li>
-                <li><a class="nav-link scrollto" href="#courses">Courses</a></li>
-                <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                <li><a class="nav-link scrollto " href="#portfolio">Products</a></li>
+                <li><a class="nav-link scrollto" href="{% url 'programming' %}">Programming</a></li>
+                <li><a class="nav-link scrollto" href="{% url 'business' %}">Business</a></li>
+                <li><a class="nav-link scrollto" href="{% url 'design'  %}">Design</a></li>
+                <li><a class="nav-link scrollto" href="{% url 'management' %}">Management</a></li>
+                {% comment %} <!-- <li><a class="nav-link scrollto" href="{% url 'premium' %}">Premium</a></li> --> {% endcomment %}
+
+
+
                 <!-- <li><a class="nav-link scrollto " href="#blogs">Blogs</a></li> -->
                 <!-- <li><a class="nav-link scrollto" href="#team">Team</a></li> -->
                 <!-- <li><a class="nav-link scrollto" href="#contact">Contact</a></li> -->
