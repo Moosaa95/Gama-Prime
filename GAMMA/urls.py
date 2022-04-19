@@ -24,6 +24,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('course/', include('courses.urls')),
     path('auth/', include('users.urls')),
+    path('blog/', include('blog.urls')),
 ]
 
 # add static
