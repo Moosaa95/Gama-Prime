@@ -27,9 +27,8 @@
             <i style="color: white;" class="bi bi-list mobile-nav-toggle"></i>
         </nav>
 
-        <a href="{% url 'register' %}">
-            <button class="btn btn-primary">Join</button>
-        </a>
+
+        {% include "auth_checker/auth.html" %}
         <!-- .navbar -->
 
     </div>

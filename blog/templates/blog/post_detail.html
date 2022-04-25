@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- add bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title></title>
+</head>
+<body>
+    
+    <h1 class="text-center mt-9 text-uppercase">Post Detail</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a href="mailto:{{user.email}}">send mail</a>
+                {% if user.is_admin %}
+                <p>now</p>
+                    <h1>hello {{user.email}} {{user.last_name}}</h1>
+                {% else %}
+                <p>out</p>
+                    <h1>hello rat</h1>
+                {% endif %}
+                
+                <h2 class="text-center">{{ post.title }}</h2>
+                <p class="text-center">{{ post.content }}</p>
+                <p class="text-center">{{ post.created_at|date:"d M Y" }}</p>
+                <p class="text-danger text-center">Author: {{post.author.get_full_name}}</p>
+                {% for tag in post_tags %}
+                <span class="text-danger text-center">{{tag.name}}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+</body>
+</html>

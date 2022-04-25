@@ -13,11 +13,11 @@ def course_to_display(request):
         'programming': Programming.objects.all(),
     }
 
-# def course_index(request):
-#     """ 
-#         course index page
-#     """
-#     return render(request, 'base.html', context=course_to_display(request))
+def course_index(request):
+    """ 
+        course index page
+    """
+    return render(request, 'courses/programming_list.html', context=course_to_display(request))
 
 
 class ProgrammingListView(generic.ListView):

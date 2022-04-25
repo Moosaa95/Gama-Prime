@@ -58,7 +58,11 @@ INSTALLED_APPS = [
     'users',
     'courses',
     # upload media files
-    'cloudinary'
+    'cloudinary',
+    'blog',
+    'crispy_forms',
+    # add django ckeditor
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -175,6 +179,11 @@ MESSAGE_TAGS = {
     messages.INFO : 'info',
 }
 
+
+
+# SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 2
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# SESSION_SAVE_EVERY_REQUEST = True
 
 
 cloudinary.config(

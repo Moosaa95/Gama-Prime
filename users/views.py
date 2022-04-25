@@ -7,6 +7,10 @@ from django.contrib import messages
 from users.forms import RegisterForm, LoginForm, ProfileForm, ProfileUpdateForm, RegisterUpdateForm
 from users.models import Profile 
 # import method decorator
+# add login required mixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
+
 from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView, FormView, UpdateView, DetailView, DeleteView, ListView
 
@@ -152,7 +156,7 @@ def logout(request):
 
 
 @method_decorator(login_required, name='dispatch')
-class UserProfileView(View):
+class UserProfileView(LoginRequiredMixin, View):
     """
         check if user is authenticated or login
      

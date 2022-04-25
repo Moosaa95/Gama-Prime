@@ -56,11 +56,17 @@
             <!-- <h2 style="color: #fff;"><b>Democratising Access to AI</b></h2> -->
             <h2 style="color: white;"><span class="typed" data-typed-items="Democratising Access to AI, The lights are turning ON in Africa, The revolution is here, Disrupting the status quo"></span>
             </h2>
-
+            {% if user.is_authenticated %}
             <div class="d-flex">
-                <a href="#courses" class="btn-get-started scrollto">Get Started</a>
-                <!-- <a href="https://www.youtube.com/watch?v=IPukuYb9xWw" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a> -->
+                <a href="{% url 'profile' %}" class="btn-get-started scrollto">User Dashboard</a>
             </div>
+                {% else %}
+                <div class="d-flex">
+                    <a href="#courses" class="btn-get-started scrollto">Get Started</a>
+                    <!-- <a href="https://www.youtube.com/watch?v=IPukuYb9xWw" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a> -->
+                </div>
+                <!-- <a href="https://www.youtube.com/watch?v=IPukuYb9xWw" class="glightbox btn-watch-video"><i class="bi bi-play-circle"></i><span>Watch Video</span></a> -->
+            {% endif %}
         </div>
     </section>
     <!-- End Hero -->
@@ -68,6 +74,12 @@
     <main id="main">
 
         <!-- ======= Featured Services Section ======= -->
+        {% if user.is_authenticated %}
+        <section id="featured-services" class="featured-services">
+            
+        </section>
+        {% else %}
+
         <section id="featured-services" class="featured-services">
             <div class="container" data-aos="fade-up">
 
@@ -226,6 +238,7 @@
 
             </div>
         </section>
+        {%endif%}
         <!-- End Featured Services Section -->
 
         <!-- ======= About Section ======= -->
@@ -270,6 +283,7 @@
 
             </div>
         </section>
+
         <!-- End About Section -->
 
         <!-- ======= Clients Section ======= -->
@@ -363,7 +377,7 @@
                     <div style="height: 2rem;" class="col-lg-6 col-md-6 mt-2" data-aos="zoom-in" data-aos-delay="1300">
                         <div class="icon-box-below">
                             <div class="icon"><i class="bi bi-mortarboard"></i></div>
-                            <h4 style="font-size: 20px;"><a href="">Courses</a></h4>
+                            <h4 style="font-size: 20px;"><a href="{% url 'courses' %}">Courses</a></h4>
                         </div>
                     </div>
 
@@ -569,7 +583,7 @@
 
         <!-- ======= Blog Section ======= -->
         {% comment %} to be work on  {% endcomment %}
-        {% comment %} <section id="blogs" class="contact">
+        <section id="blogs" class="contact">
             <div class="container" data-aos="fade-up">
 
                 <div class="section-title">
@@ -578,22 +592,24 @@
                 </div>
 
                 <div class="row" data-aos="fade-up" data-aos-delay="100">
+                    {% for post in posts %}
                     <div class="col-lg-4">
                         <div style="background-color: #f7f7f7; padding: 16px; border-radius: .5rem;" class="info-box mb-4">
                             <img style="width: 100%;" src="{% static 'landingPageAssets/img/Rectangle.png' %}" class="testimonial-img" alt="">
                             <div class="mt-3">
-                                <h5>The Edge-breaking Technology</h5>
-                                <p>Lorem, ipsum dolor sit amet lor consectetur adipisicing elit. Libero, nam....</p>
+                                <h5>{{post.title}}</h5>
+                                <p>{{post.content}}</p>
                                 <div style="margin-top: 10px;" class="section-title">
                                     <h2>
-                                        <a href="blogs/blogs.html">Read</a>
+                                        <a href="{% url 'post-list' %}">Read</a>
                                     </h2>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
 
-                    <div class="col-lg-4 col-md-6">
+                    {% comment %} <div class="col-lg-4 col-md-6">
                         <div style="background-color: #f7f7f7; padding: 16px; border-radius: .5rem;" class="info-box mb-4">
                             <img style="width: 100%;" src="{% static 'landingPageAssets/img/Rectangle.png' %}" class="testimonial-img" alt="">
                             <div class="mt-3">
@@ -621,12 +637,12 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> {% endcomment %}
 
                 </div>
 
             </div>
-        </section> {% endcomment %}
+        </section> 
         <!-- End Blog Section -->
 
         <!-- ======= Contact Section ======= -->

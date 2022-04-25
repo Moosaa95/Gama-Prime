@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- add bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>Post list</title>
+</head>
+<body>
+    <h1>Post list</h1>
+    {% for post in posts %}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <a href="{{ post.get_absolute_url }}">
+                        <h2>{{ post.title }}</h2>
+                    </a>
+                    <p>{{ post.content|truncatewords:15 }}</p>
+                    <p>{{ post.created_at }}</p>
+                    author by:<a href="{% url 'posts-list' %}" class="text-primary">{{post.author.first_name}} {{post.author.last_name}}</p>
+                        <hr>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    
+</body>
+</html>

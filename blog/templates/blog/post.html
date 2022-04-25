@@ -1,26 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'blog/blogs.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gamma Prime</title>
-    <link rel="stylesheet" href="fontawesome/css/all.min.css">
-    <!-- https://fontawesome.com/ -->
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
-    <!-- https://fonts.google.com/ -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/blogs.css" rel="stylesheet">
-    <link href="../logo1.png" rel="icon">
-</head>
-
-<body>
-    <!-- header -->
-    {% block header %}
-    {% include "blog/includes/header.html" %}
-      
-    {% endblock header %}
-    <!-- end header -->
+{% block blog-body %}
+  
 
     <div class="container-fluid">
         <main class="tm-main">
@@ -35,12 +16,13 @@
                     </form>
                 </div>
             </div>
+            
             <div class="row tm-row">
                 <div class="col-12">
                     <hr class="tm-hr-primary tm-mb-55">
                     <!-- Video player 1422x800 -->
                     <video width="954" height="535" controls class="tm-mb-40">
-                        <source src="video/wheat-field.mp4" type="video/mp4">							  
+                        <image src="{{ post.image.url }}">							  
                         Your browser does not support the video tag.
                     </video>
                 </div>
@@ -49,16 +31,15 @@
                 <div class="col-lg-12 tm-post-col">
                     <div class="tm-post-full">
                         <div class="mb-4">
-                            <h2 class="pt-2 tm-color-primary tm-post-title">Why Machine Learning?</h2>
-                            <p class="tm-mb-40">June 16, 2020 posted by <span><a href="#">Adebayo Awofuye</a></span></p>
+                            <h2 class="pt-2 tm-color-primary tm-post-title">{{post.title}}</h2>
+                            <p class="tm-mb-40">{{post.created_at|date:"d M Y"}} posted by <span><a href="#">{{post.author.get_full_name}}</a></span></p>
                             <p>
-                                This is a description of the video post. You can also have an image instead of the video. Phasellus maximus quis est sit amet maximus. Vestibulum vel rutrum lorem, ac sodales augue. Aliquam erat volutpat. Duis lectus orci, blandit in arcu est, elementum
-                                tincidunt lectus. Praesent vel justo tempor, varius lacus a, pharetra lacus. </p>
-                            <p>
-                                Duis pretium efficitur nunc. Mauris vehicula nibh nisi. Curabitur gravida neque dignissim, aliquet nulla sed, condimentum nulla. Pellentesque id venenatis quam, id cursus velit. Fusce semper tortor ac metus iaculis varius. Praesent aliquam ex vel lectus
-                                ornare tristique. Nunc et eros quis enim feugiat tincidunt et vitae dui.
+                              {{post.content}}
                             </p>
-                            <span class="d-block tm-color-primary">Programming . Tech . AI</span>
+                            {% for tag in post_tags %}
+                            <span class=" tm-color-primary">{{tag.name}}.</span>
+                            {% endfor %}
+                            <!-- <span class="text-danger text-center">{{tag.name}}</span> -->
                         </div>
 
                         <!-- Comments -->
@@ -66,40 +47,44 @@
                             <h2 class="tm-color-primary tm-post-title">Comments</h2>
                             <hr class="tm-hr-primary tm-mb-45">
 
+                            {% for comment in post_comment %}
                             <div class="tm-comment-reply tm-mb-45">
                                 <hr>
                                 <div class="tm-comment">
                                     <figure class="tm-comment-figure">
-                                        <img src="img/comment-1.jpg" alt="Image" class="mb-2 rounded-circle img-thumbnail">
-                                        <figcaption class="tm-color-primary text-center">Ahmad Idris</figcaption>
+                                        <img src="{{comment.author.image.url }}" alt="Image" class="mb-2 rounded-circle img-thumbnail">
+                                        <figcaption class="tm-color-primary text-center">{{comment.author.get_full_name}}</figcaption>
                                     </figure>
                                     <p>
-                                        Nunc et eros quis enim feugiat tincidunt et vitae dui. Nullam consectetur justo ac ex laoreet rhoncus. Nunc id leo pretium, faucibus sapien vel, euismod turpis.
+                                     {{comment.content}}
                                     </p>
                                 </div>
-                                <span class="d-block text-right tm-color-primary">June 21, 2020</span>
+                                <span class="d-block text-right tm-color-primary">{{comment.created_at}}</span>
                             </div>
+                            {% endfor %}
 
-                            <div class="tm-comment-reply tm-mb-45">
+                            <!-- <div class="tm-comment-reply tm-mb-45">
                                 <hr>
                                 <div class="tm-comment">
                                     <figure class="tm-comment-figure">
                                         <img src="img/comment-2.jpg" alt="Image" class="mb-2 rounded-circle img-thumbnail">
                                         <figcaption class="tm-color-primary text-center">Janet Auka</figcaption>
-                                    </figure>
+                                    </                 >
                                     <p>
                                         Nunc et eros quis enim feugiat tincidunt et vitae dui. Nullam consectetur justo ac ex laoreet rhoncus. Nunc id leo pretium, faucibus sapien vel, euismod turpis.
                                     </p>
                                 </div>
                                 <span class="d-block text-right tm-color-primary">June 21, 2020</span>
-                            </div>
-                            <form action="" class="mb-5 tm-comment-form">
+                            </div> -->
+                            <form action="" class="mb-5 tm-comment-form" method="post">
+                                {% csrf_token %}
                                 <h2 class="tm-color-primary tm-post-title mb-4">Your comment</h2>
                                 <div class="mb-4">
-                                    <textarea class="form-control" name="message" rows="6"></textarea>
+                                    {{ form }}
+                                    <!-- <textarea class="form-control" name="message" rows="6"></textarea> -->
                                 </div>
                                 <div class="text-right">
-                                    <button class="tm-btn tm-btn-primary tm-btn-small">Submit</button>
+                                    <button class="tm-btn tm-btn-primary tm-btn-small" type="submit">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -109,13 +94,19 @@
                     <div class="">
                         <hr class="mb-3 tm-hr-primary">
                         <h2 class="tm-mb-40 tm-post-title tm-color-primary">Related Posts</h2>
-                        <a href="#" class="d-block tm-mb-40">
-                            <figure>
-                                <img src="img/img-02.jpg" alt="Image" class="mb-3 img-fluid">
-                                <figcaption class="tm-color-primary">Duis mollis diam nec ex viverra scelerisque a sit</figcaption>
-                            </figure>
-                        </a>
-                        <a href="#" class="d-block tm-mb-40">
+                        {% if similar_posts %}
+                            {% for similar in similar_posts %}
+                            <a href="{% url 'post-detail' post.id %}" class="d-block tm-mb-40">
+                                <figure>
+                                    <img src="img/img-02.jpg" alt="Image" class="mb-3 img-fluid">
+                                    <figcaption class="tm-color-primary">{{similar}}</figcaption>
+                                </figure>
+                            </a>
+                            {% endfor %}
+                        {% else %}
+                        <h3>No Related Post</h3>
+                        {% endif %}
+                        <!-- <a href="#" class="d-block tm-mb-40">
                             <figure>
                                 <img src="img/img-05.jpg" alt="Image" class="mb-3 img-fluid">
                                 <figcaption class="tm-color-primary">Integer quis lectus eget justo ullamcorper ullamcorper</figcaption>
@@ -126,7 +117,7 @@
                                 <img src="img/img-06.jpg" alt="Image" class="mb-3 img-fluid">
                                 <figcaption class="tm-color-primary">Nam lobortis nunc sed faucibus commodo</figcaption>
                             </figure>
-                        </a>
+                        </a> -->
                     </div>
                 </aside>
             </div>
@@ -141,6 +132,7 @@
             </footer>
         </main>
     </div>
+    {% endblock blog-body %}
     <script src="js/jquery.min.js"></script>
     <script src="js/templatemo-script.js"></script>
 </body>

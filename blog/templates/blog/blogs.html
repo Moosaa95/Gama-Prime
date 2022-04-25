@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,13 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blogs - Gamma Prime</title>
-    <link rel="stylesheet" href="fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
     <!-- https://fontawesome.com/ -->
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
     <!-- https://fonts.google.com/ -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/blogs.css" rel="stylesheet">
-    <link href="../logo1.png" rel="icon">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/blogs.css' %}" rel="stylesheet">
+    <link href="{% static '../logo1.png' %}" rel="icon">
 </head>
 
 <body>
@@ -22,9 +23,9 @@
     {% endblock header %}
     <!-- end header -->
 
-    <div>
+{% block blog-body %}
+    
 
-    </div>
 
     <div class="container-fluid">
         <main class="tm-main">
@@ -40,29 +41,10 @@
                 </div>
             </div>
             <div class="row tm-row">
-                <article class="col-12 col-md-6 tm-post">
-                    <hr class="tm-hr-primary">
-                    <a href="post.html" class="effect-lily tm-post-link tm-pt-60">
-                        <div class="tm-post-link-inner">
-                            <img src="img/img-06.jpg" alt="Image" class="img-fluid">
-                        </div>
-                        <span class="position-absolute tm-new-badge">New</span>
-                        <h2 class="tm-pt-30 tm-color-primary tm-post-title">Why Machine Learning?</h2>
-                    </a>
-                    <p class="tm-pt-30">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti fuga excepturi, eum optio quidem iste deleniti neque voluptatibus repellat itaque.
-                    </p>
-                    <div class="d-flex justify-content-between tm-pt-45">
-                        <span class="tm-color-primary">Programming . Tech . AI</span>
-                        <span class="tm-color-primary">June 24, 2020</span>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between">
-                        <span>36 Likes</span>
-                        <span>Author . <a href="#">Adebayo Awofuye</a></span>
-                    </div>
-                </article>
-                <article class="col-12 col-md-6 tm-post">
+                {% for post in posts  %}
+                {% include "blog/includes/all-posts.html" %}
+                {% endfor %}
+                <!-- <article class="col-12 col-md-6 tm-post">
                     <hr class="tm-hr-primary">
                     <a href="post.html" class="effect-lily tm-post-link tm-pt-60">
                         <div class=" tm-post-link-inner">
@@ -168,21 +150,54 @@
                         <span>96 likess</span>
                         <span>Author . <a href="#">Umma Kabir</a></span>
                     </div>
-                </article>
+                </article> -->
             </div>
+            {% if is_paginated %}
             <div class="row tm-row tm-mt-100 tm-mb-75">
                 <div class="tm-prev-next-wrapper">
-                    <a href="#" class="mb-2 tm-btn tm-btn-primary tm-prev-next disabled tm-mr-20">Prev</a>
-                    <a href="#" class="mb-2 tm-btn tm-btn-primary tm-prev-next">Next</a>
+                    {% if page_obj.has_previous %}
+                    <a href="?page=1" class="tm-prev-next-link tm-prev-next-link-prev">
+                        <i class="fas fa-angle-left tm-prev-next-icon"></i>
+                        <span class="tm-prev-next-text">First</span></a>
+                    <a href="?page={{ page_obj.previous_page_number }}" class="tm-prev-next-link tm-prev-next-link-prev">
+                        <i class="fas fa-angle-left tm-prev-next-icon"></i>
+                        <span class="tm-prev-next-text">Previous</span></a>
+
+
+                    <!-- <a href="?page={{page_obj.previous_page_number}}" class="mb-2 tm-btn tm-btn-primary tm-prev-next disabled tm-mr-20">Prev</a> -->
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="tm-prev-next-link tm-prev-next-link-next">
+                        <span class="tm-prev-next-text">Next</span>
+                        <i class="fas fa-angle-right tm-prev-next-icon"></i></a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="tm-prev-next-link tm-prev-next-link-next">
+                        <span class="tm-prev-next-text">Last</span>
+                        <i class="fas fa-angle-right tm-prev-next-icon"></i></a>
+                    {% comment %} {% endif %} {% endcomment %}
+                    <!-- <a href="?page={{page_obj.next_page_number}}" class="mb-2 tm-btn tm-btn-primary tm-prev-next">Next</a> -->
+                    {% endif %}
                 </div>
+            
                 <div class="tm-paging-wrapper">
-                    <span class="d-inline-block mr-3">Page</span>
+                    <span class="d-inline-block mr-3">Page {{page_obj.number}}of {{page_obj.paginator.num_pages}}</span>
                     <nav class="tm-paging-nav d-inline-block">
                         <ul>
+                            {% for p in page_obj.paginator.page_range %}
+                                {% if page_obj.number == p %}
                             <li class="tm-paging-item active">
-                                <a href="#" class="mb-2 tm-btn tm-paging-link">1</a>
+                                <a href="?page={{p}}" class="mb-2 tm-btn tm-paging-link">{{p}}</a>
                             </li>
+                            
+                             {% elif p > page_obj.number|add:'-2' and p < page_obj.number|add:'2' %}
                             <li class="tm-paging-item">
+                                <a href="?page={{p}}" class="mb-2 tm-btn tm-paging-link">{{p}}</a>
+                            </li> 
+                                
+                                {% endif %}
+                            {% endfor %}
+
+                            
+                            <!-- <li class="tm-paging-item">
                                 <a href="#" class="mb-2 tm-btn tm-paging-link">2</a>
                             </li>
                             <li class="tm-paging-item">
@@ -190,11 +205,13 @@
                             </li>
                             <li class="tm-paging-item">
                                 <a href="#" class="mb-2 tm-btn tm-paging-link">4</a>
-                            </li>
+                            </li> -->
                         </ul>
                     </nav>
                 </div>
             </div>
+            {% endif %}
+            {% endblock blog-body %}
             <footer class="row tm-row">
                 <hr class="col-12">
                 <div class="col-md-6 col-12 tm-color-gray">
@@ -206,8 +223,8 @@
             </footer>
         </main>
     </div>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/templatemo-script.js"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/templatemo-script.js' %}"></script>
 </body>
 
 </html>
